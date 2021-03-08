@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../js/jquery-1.11.0.min.js" type="text/javascript" charset="utf-8"></script>
+		<!--validate校验库-->
+		<script type="text/javascript" src="../js/jquery.validate.js" ></script>
+		<!--国际化库，中文提示-->
+		<script type="text/javascript" src="../js/messages_zh.js" ></script>
+		<script type="text/javascript">
+			$(function(){
+				$("#formId").validate({
+					rules:{
+						username:{
+							required:true
+						},
+						password:{
+							required:true,
+							number:true
+						},
+						repassword:{
+							required:true,
+							equalTo:$("[name=password]")
+						},
+						zuixiaozhi:{
+							min:3
+						},
+						shuzhiqujian:{
+							range:[10,20]
+						},
+						card:{
+							cardLength:true
+						}
+					},
+					messages:{
+						username:{
+							required:"用户名不能为空"
+						},
+						password:{
+							required:"密码不能为空",
+							number:"输入的必须为数字"
+						},
+						repassword:{
+							required:"确认密码不能为空",
+							equalTo:"两次密码必须一致"
+						},
+						zuixiaozhi:{
+							min:"输入的数字不能小于3"
+						},
+						shuzhiqujian:{
+							range:"请输入10~20之间的数字"
+						}
+					}
+				})
+			})
+		</script>
+		
+		<script>
+			//编写校验身份证长度的自定义校验器
+			$.validator.addMethod("cardLength",function(value,ele,param){
+				//判断用户录入的值是否为15位或者18位
+//				if(value.length==15||value.length==18){
+//					return true;
+//				}
+				if(typeof param!="boolean"){
+					return true;
+				}
+				//校验身份证格式
+				if(value.length==15){
+					var reg=/^[0-9]{15}$/;
+					return reg.test(value);
+				}
+				
+				if(value.length==18){
+					var reg = /^([0-9]{18}|[0-9]{17}[X|x])$/;
+					return reg.test(value);
+				}
+			},"身份证格式不正确")
+		</script>
+	</head>
+	<body> 
+		<form id="formId" action="">
+			必填：<input type="text" name="username"/> <br/>
+			必填数字：<input type="text" name="password"/> <br />
+			必填重复：<input type="text" name="repassword"/> <br />
+			最小值：<input type="text" name="zuixiaozhi"/> <br />
+			区间：<input type="text" name="shuzhiqujian"/> <br />
+			身份证：<input type="text" name="card" />
+			<input type="submit" value="提交"/>
+		</form>
+	</body>
+</html>
